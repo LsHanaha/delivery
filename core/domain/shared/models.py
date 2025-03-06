@@ -5,7 +5,7 @@ import pydantic
 
 class Location(pydantic.BaseModel):
     coord_x: int = pydantic.Field(..., ge=1, le=10, frozen=True)
-    coord_y: int = pydantic.Field(..., ge=1, le=10, frozen=False)
+    coord_y: int = pydantic.Field(..., ge=1, le=10, frozen=True)
 
     @classmethod
     def create_random_location(cls) -> "Location":

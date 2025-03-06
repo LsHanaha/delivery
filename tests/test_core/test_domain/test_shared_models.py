@@ -35,3 +35,7 @@ def test_location_create_errors() -> None:
         models.Location(coord_x=-1, coord_y=1)
     with pytest.raises(pydantic.ValidationError):
         models.Location(coord_x=-1, coord_y=1)
+    with pytest.raises(pydantic.ValidationError):
+        val = models.Location(coord_x=1, coord_y=1)
+        val.coord_x = 2
+        val.coord_y = 2
