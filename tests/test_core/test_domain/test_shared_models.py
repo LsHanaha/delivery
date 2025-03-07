@@ -13,9 +13,10 @@ def test_location_model_distance() -> None:
     )
     assert first_path == second_path
 
-    assert models.Location(coord_x=1, coord_y=1).calc_distance_to_another_location(
-        models.Location(coord_x=1, coord_y=1)
-    ) == 0
+    assert (
+        models.Location(coord_x=1, coord_y=1).calc_distance_to_another_location(models.Location(coord_x=1, coord_y=1))
+        == 0
+    )
 
 
 def test_location_random() -> None:
@@ -35,7 +36,9 @@ def test_location_create_errors() -> None:
         models.Location(coord_x=-1, coord_y=1)
     with pytest.raises(pydantic.ValidationError):
         models.Location(coord_x=-1, coord_y=1)
+
+    val = models.Location(coord_x=1, coord_y=1)
     with pytest.raises(pydantic.ValidationError):
-        val = models.Location(coord_x=1, coord_y=1)
         val.coord_x = 2
+    with pytest.raises(pydantic.ValidationError):
         val.coord_y = 2
