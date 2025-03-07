@@ -2,6 +2,7 @@ import pydantic
 import pytest
 
 from delivery.core.domain.shared import models
+from delivery.settings import settings
 
 
 def test_location_model_distance() -> None:
@@ -23,8 +24,8 @@ def test_location_random() -> None:
     for _ in range(10):
         location = models.Location.create_random_location()
         assert location
-        assert 1 <= location.coord_x <= 10
-        assert 1 <= location.coord_y <= 10
+        assert settings.location_size_min <= location.coord_x <= settings.location_size_max
+        assert settings.location_size_min <= location.coord_y <= settings.location_size_max
 
 
 def test_location_create_errors() -> None:
