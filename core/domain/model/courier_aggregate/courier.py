@@ -25,3 +25,6 @@ class Courier(pydantic.BaseModel):
 
     def move(self, target_location: Location) -> None:
         self.location = self.transport.move(self.location, target_location)
+
+    def __eq__(self, other: "Courier") -> bool:
+        return self.id == other.id
