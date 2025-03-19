@@ -48,7 +48,8 @@ ignore = [
     "COM812", # flake8-commas "Trailing comma missing"
     "ISC001", # flake8-implicit-str-concat
     "S311",
-    "PLR2004"
+    "PLR2004",
+    "PT011"
 ]
 isort.lines-after-imports = 2
 isort.no-lines-before = ["standard-library", "local-folder"]
