@@ -1,14 +1,16 @@
-import pytest
-from delivery.infrastracture.adapters.postgres.tables import Base
-from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
-from delivery.settings import settings
 import typing
+
+import pytest
 import sqlalchemy as sa
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
+
+from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
+from delivery.infrastracture.adapters.postgres.tables import Base
+from delivery.settings import settings
 
 
 @pytest.fixture(scope="session")
-async def database():
+async def database() -> sa.Engine:
     url: typing.Final = build_db_dsn(
         settings.db_dsn,
         database_name=settings.database_name,
@@ -24,7 +26,7 @@ async def database():
 
 
 @pytest.fixture(autouse=True)
-async def db_session(database):
+async def db_session(database: sa.Engine) -> Session:
     connection = database.connect()
     transaction = connection.begin()
 
