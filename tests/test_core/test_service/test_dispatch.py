@@ -39,7 +39,7 @@ def test_dispatch_bad_routes() -> None:
 
 def test_select_nearest() -> None:
     order_location = Location(coord_x=1, coord_y=1)
-    closest_location = Location(coord_x=2, coord_y=2)
+    closest_location = Location(coord_x=2, coord_y=1)
 
     couriers = [
         Courier(
