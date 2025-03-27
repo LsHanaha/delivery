@@ -10,7 +10,7 @@ METADATA: typing.Final = sa.MetaData()
 Base = orm.declarative_base(metadata=METADATA)
 
 
-class Transports(Base):
+class TransportsTable(Base):
     __tablename__ = "transports"
 
     id: orm.Mapped[typing.Annotated[uuid.UUID, orm.mapped_column(postgresql.UUID(as_uuid=True), primary_key=True)]]
@@ -18,7 +18,7 @@ class Transports(Base):
     speed: orm.Mapped[typing.Annotated[int, orm.mapped_column(sa.Integer, nullable=False)]]
 
 
-class Couriers(Base):
+class CouriersTable(Base):
     __tablename__ = "couriers"
     __allow_unmapped__ = True
 
@@ -32,10 +32,10 @@ class Couriers(Base):
     location: orm.Mapped[typing.Annotated[list[int], orm.mapped_column(sa.ARRAY(sa.Integer), nullable=False)]]
     status: orm.Mapped[typing.Annotated[int, orm.mapped_column(sa.Integer, nullable=False)]]
 
-    transport: orm.Mapped[typing.Optional["Transports"]] = orm.relationship()
+    transport: orm.Mapped[typing.Optional["TransportsTable"]] = orm.relationship()
 
 
-class Orders(Base):
+class OrdersTable(Base):
     __tablename__ = "orders"
     __allow_unmapped__ = True
 

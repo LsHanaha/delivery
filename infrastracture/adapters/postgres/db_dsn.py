@@ -6,7 +6,6 @@ import sqlalchemy as sa
 def build_db_dsn(
     db_dsn: str,
     database_name: str,
-    use_replica: bool = False,
     drivername: str = "postgresql",
 ) -> sa.URL:
     """Parse DSN variable and replace some parts.
@@ -22,7 +21,4 @@ def build_db_dsn(
         database=database_name,
         drivername=drivername,
         query=db_dsn_query
-        | {
-            "target_session_attrs": "prefer-standby" if use_replica else "read-write",
-        },
     )
