@@ -14,8 +14,12 @@ services:
     container_name: database
     image: postgres:latest
     ports:
-      - "5433"
+      - "5432:5432"
     environment:
       POSTGRES_USER: 'username'
       POSTGRES_PASSWORD: 'password'
       POSTGRES_DB: 'delivery'
+
+volumes:
+  db:
+    driver: local

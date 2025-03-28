@@ -5,7 +5,6 @@ from delivery.core.domain.model.order_aggregate.order import Order
 
 
 class OrderRepositoryABC(abc.ABC):
-
     @abc.abstractmethod
     async def add_order(self, order: Order) -> Order:
         pass
@@ -25,4 +24,3 @@ class OrderRepositoryABC(abc.ABC):
     @abc.abstractmethod
     async def collect_all_assigned_orders(self) -> list[Order]:
         pass
-

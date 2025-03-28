@@ -3,8 +3,8 @@ import uuid
 
 from delivery.core.domain.model.courier_aggregate.courier import Courier
 
-class CourierRepositoryABC(abc.ABC):
 
+class CourierRepositoryABC(abc.ABC):
     @abc.abstractmethod
     async def store_courier(self, courier: Courier) -> Courier:
         pass
@@ -20,6 +20,3 @@ class CourierRepositoryABC(abc.ABC):
     @abc.abstractmethod
     async def collect_courier_by_id(self, courier_id: uuid.UUID) -> Courier | None:
         pass
-
-
-

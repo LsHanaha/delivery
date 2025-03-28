@@ -2,6 +2,7 @@ import math
 import uuid
 
 import pydantic
+
 from delivery.core.domain.model.courier_aggregate.courier_status import CourierStatusEnum
 from delivery.core.domain.model.courier_aggregate.transport import Transport
 from delivery.core.domain.shared.models import Location
@@ -28,3 +29,5 @@ class Courier(pydantic.BaseModel):
 
     def __eq__(self, other: "Courier") -> bool:
         return self.id == other.id
+
+    model_config = pydantic.ConfigDict(from_attributes=True)

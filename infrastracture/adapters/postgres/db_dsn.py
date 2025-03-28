@@ -17,8 +17,4 @@ def build_db_dsn(
     """
     parsed_db_dsn = sa.make_url(db_dsn)
     db_dsn_query: dict[str, typing.Any] = dict(parsed_db_dsn.query or {})
-    return parsed_db_dsn.set(
-        database=database_name,
-        drivername=drivername,
-        query=db_dsn_query
-    )
+    return parsed_db_dsn.set(database=database_name, drivername=drivername, query=db_dsn_query)

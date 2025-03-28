@@ -1,15 +1,11 @@
 import typing
 
 import pytest
-import sqlalchemy as sa
-from sqlalchemy.orm import Session, sessionmaker
-
-from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
-from delivery.infrastracture.adapters.postgres.tables import Base
-from delivery.settings import settings
-from delivery import ioc
 import sqlalchemy.ext.asyncio as sa_async
-from delivery.infrastracture.adapters.postgres.resource import SessionFactory
+
+from delivery import ioc
+from delivery.infrastracture.adapters.postgres.db_resource import SessionFactory
+from delivery.infrastracture.adapters.postgres.tables import Base
 
 
 @pytest.fixture(autouse=True)
@@ -35,31 +31,3 @@ async def _mock_ioc_container() -> typing.AsyncIterator[None]:
 
         ioc.IOCContainer.reset_override()
         await ioc.IOCContainer.tear_down()
-
-
-# @pytest.fixture(scope="session", autouse=True)
-# async def database() -> sa.Engine:
-#     print("AZAZAZ LALKA")
-#     url: typing.Final = build_db_dsn(
-#         settings.db_dsn,
-#         database_name=settings.database_name,
-#         drivername="postgresql+asyncpg",
-#     )
-#     engine = sa.create_engine(url)
-#     Base.metadata.create_all(engine)
-#     yield engine
-#     Base.metadata.drop_all(engine)
-#
-#
-# @pytest.fixture(autouse=True)
-# async def db_session(database: sa.Engine) -> Session:
-#     connection = database.connect()
-#     transaction = connection.begin()
-#
-#     session = sessionmaker(bind=connection)()
-#
-#     yield session
-#
-#     session.close()
-#     transaction.rollback()
-#     connection.close()

@@ -1,8 +1,10 @@
 import dataclasses
-from delivery.settings import settings
 import typing
-from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
+
 from sqlalchemy.ext import asyncio as sa_async
+
+from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
+from delivery.settings import settings
 
 
 def engine_factory() -> typing.AsyncIterator[sa_async.AsyncEngine]:
@@ -13,7 +15,6 @@ def engine_factory() -> typing.AsyncIterator[sa_async.AsyncEngine]:
     )
     engine = sa_async.create_async_engine(url, echo=True)
     yield engine
-    engine.dispose()
 
 
 @dataclasses.dataclass()

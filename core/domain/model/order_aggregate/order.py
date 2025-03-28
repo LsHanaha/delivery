@@ -1,4 +1,5 @@
 import pydantic
+
 from delivery.core.domain.model.order_aggregate.order_status import OrderStatusEnum
 from delivery.core.domain.shared.models import Location
 
@@ -23,3 +24,5 @@ class Order(pydantic.BaseModel):
             msg = "Order. Cannot close non-assigned order"
             raise ValueError(msg)
         self.status = OrderStatusEnum.Completed
+
+    model_config = pydantic.ConfigDict(from_attributes=True)
