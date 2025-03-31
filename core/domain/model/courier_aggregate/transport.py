@@ -1,6 +1,7 @@
 import uuid
 
 import pydantic
+
 from delivery.core.domain.shared import models
 
 
@@ -33,3 +34,5 @@ class Transport(pydantic.BaseModel):
 
     def __eq__(self, other: "Transport") -> bool:
         return self.id == other.id
+
+    model_config = pydantic.ConfigDict(from_attributes=True)

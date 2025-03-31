@@ -1,13 +1,16 @@
+import dataclasses
 import random
-
-import pydantic
 
 from delivery.settings import settings
 
 
-class Location(pydantic.BaseModel):
-    coord_x: int = pydantic.Field(..., ge=settings.location_size_min, le=settings.location_size_max, frozen=True)
-    coord_y: int = pydantic.Field(..., ge=settings.location_size_min, le=settings.location_size_max, frozen=True)
+@dataclasses.dataclass(frozen=True)
+class Location:
+    coord_x: int
+    coord_y: int
+
+    def __composite_values__(self) -> tuple[int, int]:
+        return self.coord_x, self.coord_y
 
     @classmethod
     def create_random_location(cls) -> "Location":
@@ -18,3 +21,14 @@ class Location(pydantic.BaseModel):
 
     def calc_distance_to_another_location(self, another: "Location") -> int:
         return abs(self.coord_x - another.coord_x) + abs(self.coord_y - another.coord_y)
+
+    def __post_init__(self) -> None:
+        if not self.coord_x or not self.coord_y:
+            msg = "Values must be added"
+            raise ValueError(msg)
+        if not 1 <= self.coord_x <= 10:
+            msg = "Coord must be between 1 and 10"
+            raise ValueError(msg)
+        if not 1 <= self.coord_y <= 10:
+            msg = "Coord must be between 1 and 10"
+            raise ValueError(msg)

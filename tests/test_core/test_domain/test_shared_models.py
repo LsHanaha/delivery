@@ -1,4 +1,5 @@
-import pydantic
+import dataclasses
+
 import pytest
 
 from delivery.core.domain.shared import models
@@ -29,17 +30,17 @@ def test_location_random() -> None:
 
 
 def test_location_create_errors() -> None:
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(ValueError):
         models.Location(coord_x=0, coord_y=1)
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(ValueError):
         models.Location(coord_x=1, coord_y=0)
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(ValueError):
         models.Location(coord_x=-1, coord_y=1)
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(ValueError):
         models.Location(coord_x=-1, coord_y=1)
 
     val = models.Location(coord_x=1, coord_y=1)
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(dataclasses.FrozenInstanceError):
         val.coord_x = 2
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(dataclasses.FrozenInstanceError):
         val.coord_y = 2

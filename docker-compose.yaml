@@ -1,0 +1,25 @@
+services:
+  migrations:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - ENVIRONMENT=dev
+    depends_on:
+      - db
+    command: ["alembic", "upgrade", "head"]
+
+  db:
+    restart: always
+    container_name: database
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: 'username'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'delivery'
+
+volumes:
+  db:
+    driver: local
