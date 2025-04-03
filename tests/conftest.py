@@ -2,8 +2,10 @@ import typing
 
 import pytest
 import sqlalchemy.ext.asyncio as sa_async
+from fastapi.testclient import TestClient
 
 from delivery import ioc
+from delivery.app import app
 from delivery.infrastracture.adapters.postgres.db_resource import SessionFactory
 from delivery.infrastracture.adapters.postgres.tables import Base
 
@@ -31,3 +33,8 @@ async def _mock_ioc_container() -> typing.AsyncIterator[None]:
 
         ioc.IOCContainer.reset_override()
         await ioc.IOCContainer.tear_down()
+
+
+@pytest.fixture
+def test_client() -> TestClient:
+    return TestClient(app)

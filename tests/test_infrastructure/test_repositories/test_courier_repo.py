@@ -59,7 +59,6 @@ async def test_fetch_free_couriers_db(
                 status=CourierStatusEnum.Free,
             ),
         )
-    for _ in range(amount):
         await courier_repo.store_courier(
             Courier(
                 name=FAKER_OBJ.user_name(),
