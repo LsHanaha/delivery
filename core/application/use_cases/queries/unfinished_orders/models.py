@@ -1,4 +1,5 @@
 import pydantic
+
 from delivery.core.domain.shared.models import Location
 
 

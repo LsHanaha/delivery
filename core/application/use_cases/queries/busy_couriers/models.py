@@ -1,5 +1,7 @@
 import pydantic
+
 from delivery.core.domain.shared.models import Location
+
 
 class BusyCourierLocationModel(pydantic.BaseModel):
     X: int
