@@ -12,4 +12,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(ROUTER_OBJ, prefix="/api/v1/", tags=["use-cases"])
+app.include_router(ROUTER_OBJ, prefix="/api/v1", tags=["use-cases"])
