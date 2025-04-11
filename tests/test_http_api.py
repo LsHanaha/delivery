@@ -1,6 +1,5 @@
 import typing
 
-import fastapi.testclient
 import httpx
 import pytest
 from faker import Faker
@@ -13,7 +12,6 @@ from delivery.core.domain.model.courier_aggregate.courier_status import CourierS
 from delivery.core.domain.model.order_aggregate.order import Order, OrderStatusEnum
 from delivery.infrastracture.adapters.postgres.repositories.courier_repo import CourierRepository
 from delivery.infrastracture.adapters.postgres.repositories.order_repo import OrderRepository
-from httpx import AsyncClient
 
 
 FAKER_OBJ: typing.Final = Faker()

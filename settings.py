@@ -9,5 +9,7 @@ class Settings(BaseSettings):
     database_name: str = "delivery"
     database_connection_timeout: float = 10.0
 
+    geo_dsn: str = "localhost:5004"
+
 
 settings = Settings()
