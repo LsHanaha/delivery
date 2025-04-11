@@ -5,8 +5,6 @@ from fastapi import Depends
 
 from delivery import ioc
 from delivery.core.application.use_cases.commands.assign_courier.handler import AssignCourierHandler
-from delivery.core.application.use_cases.commands.create_order.handler import CreateOrderCommandHandler
-from delivery.core.application.use_cases.commands.create_order.models import CreateOrderCommandModel
 from delivery.core.application.use_cases.commands.move_couriers.handler import MoveCouriersHandler
 from delivery.core.application.use_cases.queries.busy_couriers.handler import BusyCouriersHandler
 from delivery.core.application.use_cases.queries.busy_couriers.models import BusyCourierModel
@@ -41,18 +39,6 @@ async def assign_courier(
     assign_courier_handler: typing.Annotated[AssignCourierHandler, Depends(ioc.IOCContainer.assign_courier_handler)],
 ) -> bool:
     await assign_courier_handler.handle()
-    return True
-
-
-@ROUTER_OBJ.post(
-    "/orders/",
-    status_code=fastapi.status.HTTP_201_CREATED,
-)
-async def create_order(
-    data: CreateOrderCommandModel,
-    create_order_handler: typing.Annotated[CreateOrderCommandHandler, Depends(ioc.IOCContainer.create_order_handler)],
-) -> bool:
-    await create_order_handler.handle(data)
     return True
 
 
