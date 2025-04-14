@@ -13,6 +13,7 @@ class Settings(BaseSettings):
 
     kafka_dsn: str = "localhost:9092"
     kafka_topic_basket_confirmed: str = "basket.confirmed"
+    kafka_topic_status_changed: str = "order.status.changed"
 
 
 settings = Settings()
