@@ -11,5 +11,8 @@ class Settings(BaseSettings):
 
     geo_dsn: str = "localhost:5004"
 
+    kafka_dsn: str = "localhost:9092"
+    kafka_topic_basket_confirmed: str = "basket.confirmed"
+
 
 settings = Settings()

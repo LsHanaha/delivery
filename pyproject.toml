@@ -16,6 +16,7 @@ dependencies = [
     "that-depends (>=2.2.0,<3.0.0)",
     "fastapi[standard] (>=0.115.12,<0.116.0)",
     "grpcio (>=1.71.0,<2.0.0)",
+    "faststream[kafka] (>=0.5.39,<0.6.0)",
 ]
 
 
