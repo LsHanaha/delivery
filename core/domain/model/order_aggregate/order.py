@@ -1,7 +1,11 @@
 import pydantic
 
+from delivery.core.domain.model.order_aggregate.domain_events.order_completed_domain_event import (
+    OrderCompletedDomainEvent,
+)
 from delivery.core.domain.model.order_aggregate.order_status import OrderStatusEnum
 from delivery.core.domain.shared.models import Location
+from delivery.tasks_storage import TasksStorage
 
 
 class Order(pydantic.BaseModel):
@@ -24,5 +28,8 @@ class Order(pydantic.BaseModel):
             msg = "Order. Cannot close non-assigned order"
             raise ValueError(msg)
         self.status = OrderStatusEnum.Completed
+        TasksStorage().add_task(
+            self.id, OrderCompletedDomainEvent(order_id=self.id, order_status=OrderStatusEnum.Completed)
+        )
 
     model_config = pydantic.ConfigDict(from_attributes=True)
