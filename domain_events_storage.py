@@ -3,12 +3,12 @@ import threading
 from delivery.core.ports.domain_event_abc import DomainEventABC
 
 
-class TasksStorage:
+class DomainEventStorage:
     tasks: dict[str, list[DomainEventABC]] | None = None
     _instance = None
     _lock = threading.Lock()
 
-    def __new__(cls) -> "TasksStorage":
+    def __new__(cls) -> "DomainEventStorage":
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:

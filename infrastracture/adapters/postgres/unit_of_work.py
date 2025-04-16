@@ -1,17 +1,20 @@
 import asyncio
 import dataclasses
 
-from delivery.core.application.domain_event_handlers.order_completed_event_handler import (
-    OrderCompletedDomainEventHandler,
+from delivery.core.application.models.outbox import OutboxEventModel
+from delivery.core.domain.model.order_aggregate.domain_events.order_completed_domain_event import (
+    OrderCompletedDomainEvent,
 )
+from delivery.domain_events_storage import DomainEventStorage
 from delivery.infrastracture.adapters.postgres.db_resource import SessionFactory
-from delivery.tasks_storage import TasksStorage
+from delivery.infrastracture.adapters.postgres.repositories.outbox_repo import OutboxEventsRepository
+from delivery.settings import settings
 
 
 @dataclasses.dataclass
 class UnitOfWork:
     database_session_factory: SessionFactory
-    order_completed_event_handler: OrderCompletedDomainEventHandler
+    outbox_events_repo: OutboxEventsRepository
     tasks: list[asyncio.Task] = dataclasses.field(default_factory=list)
 
     async def __aenter__(self) -> "UnitOfWork":
@@ -23,12 +26,15 @@ class UnitOfWork:
                 await session.begin()
                 for task in self.tasks:
                     await task
+                domain_events_storage = DomainEventStorage()
+                if domain_events_storage.tasks and domain_events_storage.tasks.get(key):
+                    curr_events = domain_events_storage.tasks[key]
+                    for event in curr_events:
+                        if isinstance(event, OrderCompletedDomainEvent):
+                            await self.outbox_events_repo.add_event(
+                                OutboxEventModel(event=event.model_dump(), topic=settings.kafka_topic_basket_confirmed)
+                            )
                 await session.commit()
-                tasks_storage = TasksStorage()
-                if tasks_storage.tasks and tasks_storage.tasks.get(key):
-                    curr_tasks = tasks_storage.tasks[key]
-                    for message in curr_tasks:
-                        await self.order_completed_event_handler.handle(message)
 
             except Exception as exc:
                 await session.rollback()

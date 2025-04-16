@@ -15,7 +15,9 @@ from delivery.infrastracture.adapters.kafka.status_change_events_producer import
 from delivery.infrastracture.adapters.postgres.db_resource import create_session_factory, engine_factory
 from delivery.infrastracture.adapters.postgres.repositories.courier_repo import CourierRepository
 from delivery.infrastracture.adapters.postgres.repositories.order_repo import OrderRepository
+from delivery.infrastracture.adapters.postgres.repositories.outbox_repo import OutboxEventsRepository
 from delivery.infrastracture.adapters.postgres.unit_of_work import UnitOfWork
+from delivery.periodic_tasks import OutboxPatternJob
 
 
 class IOCContainer(BaseContainer):
@@ -35,15 +37,26 @@ class IOCContainer(BaseContainer):
         OrderCompletedDomainEventHandler, event_producer=event_producer.cast
     )
 
-    unit_of_work = providers.Factory(
-        UnitOfWork,
-        database_session_factory=database_session_factory.cast,
-        order_completed_event_handler=order_completed_event_handler.cast,
-    )
+
 
     # REPOS
     order_repo = providers.Factory(OrderRepository, database_session_factory=database_session_factory.cast)
     courier_repo = providers.Factory(CourierRepository, database_session_factory=database_session_factory.cast)
+    outbox_events_repo = providers.Factory(
+        OutboxEventsRepository, database_session_factory=database_session_factory.cast
+    )
+
+    unit_of_work = providers.Factory(
+        UnitOfWork,
+        database_session_factory=database_session_factory.cast,
+        outbox_events_repo=outbox_events_repo.cast
+    )
+
+    periodic_tasks = providers.Factory(
+        OutboxPatternJob,
+        outbox_events_repo=outbox_events_repo.cast,
+        order_completed_event_handler=order_completed_event_handler.cast,
+    )
 
     # USE CASES
     busy_couriers_handler = providers.Factory(

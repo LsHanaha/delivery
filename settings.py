@@ -15,5 +15,7 @@ class Settings(BaseSettings):
     kafka_topic_basket_confirmed: str = "basket.confirmed"
     kafka_topic_status_changed: str = "order.status.changed"
 
+    outbox_job_period_s: int = 5
+
 
 settings = Settings()

@@ -66,7 +66,7 @@ ignore = [
     "S311",
     "PLR2004",
     "PT011",
-    "N999"
+    "N999",
 ]
 isort.lines-after-imports = 2
 isort.no-lines-before = ["standard-library", "local-folder"]

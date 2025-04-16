@@ -1,12 +1,12 @@
 import typing
 from logging.config import fileConfig
 
+from delivery.infrastracture.adapters.postgres.db_dsn import build_db_dsn
+from delivery.infrastracture.adapters.postgres.tables import METADATA
+from delivery.settings import settings
 from sqlalchemy import URL, create_engine
 
 from alembic import context
-from infrastracture.adapters.postgres.db_dsn import build_db_dsn
-from infrastracture.adapters.postgres.tables import METADATA
-from settings import settings
 
 
 def get_dsn() -> URL:
