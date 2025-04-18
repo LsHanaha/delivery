@@ -1,3 +1,4 @@
+import datetime
 import typing
 import uuid
 
@@ -69,5 +70,22 @@ class OrdersTable(Base):
     courier_id: orm.Mapped[
         typing.Annotated[
             uuid.UUID, orm.mapped_column(postgresql.UUID(as_uuid=True), sa.ForeignKey("couriers.id"), nullable=True)
+        ]
+    ]
+
+
+class OutboxEventsTable(Base):
+    __tablename__ = "outbox_events"
+    __allow_unmapped__ = True
+
+    id: orm.Mapped[typing.Annotated[int, orm.mapped_column(sa.Integer, nullable=False, primary_key=True)]]
+    event: orm.Mapped[typing.Annotated[dict[str, typing.Any], orm.mapped_column(postgresql.JSONB, nullable=False)]]
+    topic: orm.Mapped[typing.Annotated[str, orm.mapped_column(sa.String, nullable=False)]]
+    created_at: orm.Mapped[
+        typing.Annotated[datetime.datetime, orm.mapped_column(postgresql.TIMESTAMP(timezone=True), nullable=False)]
+    ]
+    sent_at: orm.Mapped[
+        typing.Annotated[
+            datetime.datetime | None, orm.mapped_column(postgresql.TIMESTAMP(timezone=True), nullable=True)
         ]
     ]
